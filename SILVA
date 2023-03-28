@@ -28,9 +28,9 @@ int button_2flag     = 0;
 int8 floorID         = 2; // Variável para ler o andar (Inicia no andar 2)
 
 //dividido por 100 devido passos no teste do simulador
-int16 pulsesMotor    = 156;//46; pulsos total do motor 
-int16  first_floor      = 19; //55; 7823/4; equivalente a 6m - motor de 4 polos
-int16  second_floor     = 39;//11; 15646/4; equivalente a 12m - motor de 4 polos
+int16 pulsesMotor    = 156;//6; pulsos total do motor 
+int16  first_floor      = 19;//56; 7823/4; equivalente a 6m - motor de 4 polos
+int16  second_floor     = 39;//12; 15646/4; equivalente a 12m - motor de 4 polos
 
 int temp = 2; //tempo= 2ms => 2048*0,002=4,096 segundos (período do motor)
 
@@ -270,4 +270,5 @@ void main()
       
    }
 }
+
    
