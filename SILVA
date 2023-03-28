@@ -18,6 +18,8 @@ sem usar a realimentação pela serial, ou seja, armazenando a posição do elev
 #define Button_Floor1   pin_b1   //Botao para subir elevador 1 andar
 #define Button_Terreo   pin_b0   //Botao para o terreo   
 
+int tm0= 61;    //Interrupcao para 0.01s
+
 //variáveis de armazenamento dos botões
 int button_0flag     = 0;
 int button_1flag     = 0;
@@ -35,8 +37,37 @@ int temp = 2; //tempo= 2ms => 2048*0,002=4,096 segundos (período do motor)
 /* A interrupção TMR0 é gerada quando o registrador TMR0 estoura (overflow), conta de FF para 00.
 Este overflow seta o bit T0IF (bit 2 do Reg. INTCON) */
 #int_timer0
-int tm0= 61;    //Interrupcao para 0.01s
 
+void buttonCheck() 
+{ 
+   static unsigned int16 n; 
+   set_timer0(tm0+get_timer0()); 
+   n++;
+   if (n==50)                                                                  //Varredura de botoes a cada 0.5s
+   { 
+      n=0;
+      if((!input(Button_Terreo))&&(input(Button_Floor1))&&(input(Button_Floor2)))
+      {
+         button_0flag   = 1;
+         button_1flag   = 0;
+         button_2flag   = 0;
+      }
+      else if((input(Button_Terreo))&&(!input(Button_Floor1))&&(input(Button_Floor2)))
+      {
+         button_0flag   = 0;
+         button_1flag   = 1;
+         button_2flag   = 0;
+      }
+      else if((input(Button_Terreo))&&(input(Button_Floor1))&&(!input(Button_Floor2)))
+      {
+         button_0flag   = 0;
+         button_1flag   = 0;
+         button_2flag   = 1;
+      }
+      
+      //scheduler++;
+   }
+} 
 void main()
 {
    set_tris_d(0x00);
@@ -239,5 +270,4 @@ void main()
       
    }
 }
-
    
